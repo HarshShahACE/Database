@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login Example</title>
+    <!-- Add the Facebook SDK -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+</head>
+<body>
+    <div id="status"></div>
+    <button onclick="checkLoginState()">Log in with Facebook</button>
+
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: '1596418334534000',
+                cookie: true,
+                xfbml: true,
+                version: 'v19.0'
+            });
+
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        };
+
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                getUserInfo();
+            } else {
+                document.getElementById('status').innerHTML = 'Please log into this webpage.';
+            }
+        }
+
+        function getUserInfo() {
+            FB.api('/me', { fields: 'id,name,email' }, function(response) {
+                console.log('User info:', response);
+                document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+            });
+        }
+    </script>
+</body>
+</html>
